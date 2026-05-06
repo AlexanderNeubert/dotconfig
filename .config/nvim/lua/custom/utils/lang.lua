@@ -9,14 +9,6 @@ M.matches_any_regex = function(str, tbl)
   return false
 end
 
-M.remove_str_from_list = function(list, str)
-  for i, value in ipairs(list) do
-    if value == str then
-      table.remove(list, i)
-    end
-  end
-end
-
 M.list_merge = function(...)
   local lists = {}
   for _, list in ipairs { ... } do

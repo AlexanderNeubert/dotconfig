@@ -17,8 +17,6 @@ return {
     },
   },
 
-  -- NOTE: lang-web.lua adds Prettier formatting for Markdown
-
   {
     "Saimo/peek.nvim",
     main = "peek",

@@ -1,87 +1,9 @@
 local constants = require "custom.constants"
-local lazyvim_utils = require "custom.utils.lazyvim"
-local format_utils = require "custom.utils.format"
-local lsp_utils = require "custom.utils.lsp"
-
-if vim.g.lazyvim_biome_needs_config == nil then
-  vim.g.lazyvim_biome_needs_config = true
-end
-if vim.g.lazyvim_eslint_auto_format == nil then
-  vim.g.lazyvim_eslint_auto_format = false
-end
-if vim.g.lazyvim_prettier_needs_config == nil then
-  vim.g.lazyvim_prettier_needs_config = false
-end
-
-local prettier_supported = {
-  "css",
-  "graphql",
-  "handlebars",
-  "html",
-  "javascript",
-  "javascriptreact",
-  "json",
-  "jsonc",
-  "less",
-  "markdown",
-  "markdown.mdx",
-  "scss",
-  "typescript",
-  "typescriptreact",
-  "vue",
-  "yaml",
-}
-
-local function has_prettier_config(ctx)
-  vim.fn.system { "prettier", "--find-config-path", ctx.filename }
-  return vim.v.shell_error == 0
-end
-
-local function has_biome_config(path)
-  local has_biome = require("lspconfig.util").root_pattern("biome.json", "biome.jsonc")
-  return has_biome(path)
-end
-
--- source: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/formatting/prettier.lua
-local function has_prettier_parser(ctx)
-  local ft = vim.bo[ctx.buf].filetype --[[@as string]]
-  -- default filetypes are always supported
-  if vim.tbl_contains(prettier_supported, ft) then
-    return true
-  end
-  -- otherwise, check if a parser can be inferred
-  local ret = vim.fn.system { "prettierd", "--file-info", "'" .. ctx.filename .. "'" }
-  ---@type boolean, string?
-  local ok, parser = pcall(function()
-    return vim.fn.json_decode(ret).inferredParser
-  end)
-  return ok and parser and parser ~= vim.NIL
-end
-
-has_prettier_config = lazyvim_utils.safe_memoize(has_prettier_config)
-has_prettier_parser = lazyvim_utils.safe_memoize(has_prettier_parser)
-has_biome_config = lazyvim_utils.safe_memoize(has_biome_config)
 
 return {
   {
     enabled = not constants.first_install,
-    import = "lazyvim.plugins.extras.lang.tailwind",
-  },
-  {
-    enabled = not constants.first_install,
     import = "lazyvim.plugins.extras.lang.json",
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = function()
-      vim.filetype.add {
-        extension = {
-          mdx = "markdown.mdx",
-        },
-      }
-    end,
   },
 
   {
@@ -89,33 +11,10 @@ return {
     optional = true,
     opts = {
       servers = {
-        html = { filetypes = { "xhtml", "html" } },
-        cssls = {
-          init_options = {
-            provideFormatter = false,
-          },
-          settings = {
-            css = {
-              validate = false,
-            },
-            less = {
-              validate = false,
-            },
-            scss = {
-              validate = false,
-            },
-          },
-        },
-        cssmodules_ls = {},
         vtsls = {
           filetypes = {
             "javascript",
-            "javascriptreact",
-            "javascript.jsx",
             "typescript",
-            "typescriptreact",
-            "typescript.tsx",
-            "vue",
           },
           settings = {
             complete_function_calls = true,
@@ -157,29 +56,6 @@ return {
             debounce_text_changes = 250,
           },
         },
-        biome = {
-          condition = function()
-            return has_biome_config(vim.uv.cwd())
-          end,
-        },
-        eslint = {
-          settings = {
-            run = "onSave",
-            -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
-            workingDirectories = { mode = "auto" },
-            -- validate = "off", -- disables diagnostics and code actions
-            format = vim.g.lazyvim_eslint_auto_format,
-            runtime = "node",
-          },
-          flags = {
-            debounce_text_changes = 250,
-          },
-        },
-        tailwindcss = {
-          flags = {
-            debounce_text_changes = 250,
-          },
-        },
       },
       setup = {
         vtsls = function(_, opts)
@@ -187,71 +63,6 @@ return {
           opts.settings.javascript =
             vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
         end,
-        eslint = function()
-          if not vim.g.lazyvim_eslint_auto_format then
-            return
-          end
-
-          local formatter = lsp_utils.formatter {
-            name = "eslint: lsp",
-            primary = false,
-            priority = 200,
-            filter = "eslint",
-          }
-
-          -- register the formatter with LazyVim
-          format_utils.register(formatter)
-        end,
-      },
-    },
-  },
-
-  {
-    "stevearc/conform.nvim",
-    optional = true,
-    opts = {
-      -- https://biomejs.dev/internals/language-support/
-      formatters_by_ft = {
-        ["css"] = { "biome", "prettierd" },
-        ["graphql"] = { "biome", "prettierd" },
-        ["handlebars"] = { "prettierd" },
-        ["html"] = {
-          -- "biome",
-          "prettierd",
-        },
-        ["javascript"] = { "biome", "prettierd" },
-        ["javascriptreact"] = { "biome", "prettierd" },
-        ["json"] = { "biome", "prettierd" },
-        ["jsonc"] = { "biome", "prettierd" },
-        ["less"] = { "prettierd" },
-        ["markdown"] = {
-          -- "biome",
-          "prettierd",
-        },
-        ["markdown.mdx"] = { "prettierd" },
-        ["svelte"] = { "biome", "prettierd" },
-        ["scss"] = { "prettierd" },
-        ["typescript"] = { "biome", "prettierd" },
-        ["typescriptreact"] = { "biome", "prettierd" },
-        ["vue"] = { "biome", "prettierd" },
-        ["yaml"] = {
-          -- "biome",
-          "prettierd",
-        },
-        ["xml"] = { "xmlformat" },
-      },
-      formatters = {
-        prettierd = {
-          condition = function(_, ctx)
-            return has_prettier_parser(ctx)
-              and (vim.g.lazyvim_prettier_needs_config ~= true or has_prettier_config(ctx))
-          end,
-        },
-        biome = {
-          condition = function(_, ctx)
-            return vim.g.lazyvim_biome_needs_config ~= true or has_biome_config(ctx.dirname)
-          end,
-        },
       },
     },
   },
@@ -300,7 +111,7 @@ return {
         end
       end
 
-      local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+      local js_filetypes = { "typescript", "javascript" }
       local vscode = require "dap.ext.vscode"
       vscode.type_to_filetypes["node"] = js_filetypes
       vscode.type_to_filetypes["pwa-node"] = js_filetypes
@@ -357,11 +168,8 @@ return {
     "nvim-mini/mini.icons",
     opts = {
       file = {
-        [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
         [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
-        [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
         [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
-        ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
         ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
         ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
         ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
@@ -374,18 +182,12 @@ return {
     "nvim-neotest/neotest",
     optional = true,
     dependencies = {
-      "thenbe/neotest-playwright",
       -- "nvim-neotest/neotest-jest",
       "marilari88/neotest-vitest",
     },
     opts = function(_, opts)
       return vim.tbl_deep_extend("force", opts, {
         adapters = {
-          ["neotest-playwright"] = {
-            options = {
-              enable_dynamic_test_discovery = true,
-            },
-          },
           ["neotest-vitest"] = {},
         },
       })

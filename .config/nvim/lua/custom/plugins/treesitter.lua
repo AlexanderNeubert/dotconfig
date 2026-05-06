@@ -17,14 +17,11 @@ return {
       -- NOTE: nvim-treesitter doesn't have the option `ensure_installed`
       ensure_installed = {
         "bash",
-        "c_sharp",
-        "css",
         "ssh_config",
         "graphql",
         "gitcommit",
         "git_rebase",
         "git_config",
-        "html",
         "javascript",
         "jsdoc",
         "query",
@@ -34,8 +31,6 @@ return {
         "markdown",
         "markdown_inline",
         "python",
-        "scss",
-        "tsx",
         "typescript",
         "vim",
         "vimdoc",
@@ -43,7 +38,6 @@ return {
         "dockerfile",
         "just",
         "toml",
-        "xml",
         "yaml",
       },
     },
@@ -76,7 +70,7 @@ return {
 
           -- indents
           if treesitter_utils.have(ev.match, "indents") then
-            local exclude_filetypes = { "html", "yaml", "lua", "javascript" }
+            local exclude_filetypes = { "yaml", "lua", "javascript" }
             if not vim.tbl_contains(exclude_filetypes, ev.match) then
               vim.bo.indentexpr = [[%!v:lua.require('custom.plugins.utils.treesitter').indentexpr()]]
             end
