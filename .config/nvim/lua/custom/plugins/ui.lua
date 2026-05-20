@@ -293,11 +293,21 @@ return {
             },
           },
         },
+        -- skip checkhealth progress so noice doesn't steal focus mid-:checkhealth
+        {
+          filter = {
+            event = "msg_show",
+            kind = { "progress", "" },
+            find = "checkhealth",
+          },
+          opts = { skip = true },
+        },
         -- show long notifications in split
         {
           filter = {
             event = "msg_show",
             min_height = 20,
+            ["not"] = { find = "checkhealth" },
           },
           view = "cmdline_output",
         },

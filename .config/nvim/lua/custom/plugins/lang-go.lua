@@ -26,6 +26,11 @@ return {
           },
         },
       },
+      setup = {
+        -- override LazyVim's stale semanticTokensProvider workaround;
+        -- modern gopls advertises the capability (with its own legend) itself.
+        gopls = function() end,
+      },
     },
   },
 

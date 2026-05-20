@@ -18,12 +18,12 @@ return {
       ensure_installed = {
         "bash",
         "ssh_config",
-        "graphql",
         "gitcommit",
         "git_rebase",
         "git_config",
         "javascript",
         "jsdoc",
+        "typescript",
         "query",
         "json",
         "regex",
@@ -31,11 +31,14 @@ return {
         "markdown",
         "markdown_inline",
         "python",
-        "typescript",
         "vim",
         "vimdoc",
         "diff",
         "dockerfile",
+        "go",
+        "gomod",
+        "gosum",
+        "gowork",
         "just",
         "toml",
         "yaml",
@@ -174,16 +177,6 @@ return {
         line_numbers = true,
         enable_hl = false,
       }
-    end,
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    event = { "InsertEnter", "VeryLazy" },
-    config = function()
-      lazy_utils.on_load("nvim-treesitter", function()
-        require("nvim-ts-autotag").setup()
-      end)
     end,
   },
 

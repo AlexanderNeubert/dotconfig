@@ -118,6 +118,9 @@ return {
                 dynamicRegistration = false,
                 lineFoldingOnly = true,
               },
+
+              -- semantic highlighting
+              semanticTokens = vim.lsp.protocol.make_client_capabilities().textDocument.semanticTokens,
             },
 
             -- rename
@@ -270,61 +273,6 @@ return {
               "<leader>lo",
               lsp_utils.code_action "source.organizeImports",
               desc = "Organize Imports",
-            },
-          },
-        },
-        vtsls = {
-          keys = {
-            {
-              "go",
-              function()
-                local win = vim.api.nvim_get_current_win()
-                local params = vim.lsp.util.make_position_params(win, "utf-16")
-                lsp_utils.execute {
-                  command = "typescript.goToSourceDefinition",
-                  arguments = { params.textDocument.uri, params.position },
-                  open = true,
-                }
-              end,
-              desc = "Goto Source Definition",
-            },
-            {
-              "gR",
-              function()
-                lsp_utils.execute {
-                  command = "typescript.findAllFileReferences",
-                  arguments = { vim.uri_from_bufnr(0) },
-                  open = true,
-                }
-              end,
-              desc = "File References",
-            },
-            {
-              "<leader>lo",
-              lsp_utils.code_action "source.organizeImports",
-              desc = "Organize Imports",
-            },
-            {
-              "<leader>lm",
-              lsp_utils.code_action "source.addMissingImports.ts",
-              desc = "Add Missing Imports",
-            },
-            {
-              "<leader>lu",
-              lsp_utils.code_action "source.removeUnused.ts",
-              desc = "Remove Unused Imports",
-            },
-            {
-              "<leader>lD",
-              lsp_utils.code_action "source.fixAll.ts",
-              desc = "Fix All Diagnostics",
-            },
-            {
-              "<leader>lT",
-              function()
-                lsp_utils.execute { command = "typescript.selectTypeScriptVersion" }
-              end,
-              desc = "Select TS Workspace Version",
             },
           },
         },
