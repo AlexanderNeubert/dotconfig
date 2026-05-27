@@ -31,4 +31,4 @@ nvim_utils.autocmd("User", {
   end,
 })
 
-vim.cmd.colorscheme "poimandres"
+vim.cmd.colorscheme "catppuccin-mocha"

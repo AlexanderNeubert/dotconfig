@@ -1,27 +1,6 @@
 local constants = require "custom.constants"
 local lazyvim_utils = require "custom.utils.lazyvim"
-local nvim_utils = require "custom.utils.nvim"
 local lsp_utils = require "custom.utils.lsp"
-
-local function get_tmux_socket_path()
-  local tmux = vim.env.TMUX
-  if not tmux or #tmux == 0 then
-    return nil
-  end
-
-  return vim.split(tmux, ",", { trimempty = true })[1]
-end
-
----@param args (string|number)[]
-local function tmux_exec(args)
-  local socket = get_tmux_socket_path()
-  if not socket then
-    return nil
-  end
-
-  local cmd = vim.list_extend({ "tmux", "-S", socket }, args, 1, #args)
-  return vim.fn.system(cmd)
-end
 
 return {
   {
@@ -169,105 +148,6 @@ return {
       return {
         aerial = { enable = false },
       }
-    end,
-  },
-
-  {
-    "mrjones2014/smart-splits.nvim",
-    -- PERF: It can double the startup time in some environments,
-    -- e.g., when your laptop is in power-saving mode
-    commit = "2b5dda43b3de5d13b56c4606f7d19db78637e527", -- v2.0.3
-    keys = {
-      -- focus windows
-      {
-        "<C-Left>",
-        "<cmd>lua require('smart-splits').move_cursor_left()<cr>",
-        desc = "Focus Window Left",
-      },
-      {
-        "<C-Right>",
-        "<cmd>lua require('smart-splits').move_cursor_right()<cr>",
-        desc = "Focus Window Right",
-      },
-      {
-        "<C-Down>",
-        "<cmd>lua require('smart-splits').move_cursor_down()<cr>",
-        desc = "Focus Window Down",
-      },
-      {
-        "<C-Up>",
-        "<cmd>lua require('smart-splits').move_cursor_up()<cr>",
-        desc = "Focus Window Up",
-      },
-
-      -- resize windows
-      {
-        "<C-S-A-Left>",
-        "<cmd>lua require('smart-splits').resize_left()<cr>",
-        desc = "Resize Window Left",
-      },
-      {
-        "<C-S-A-Right>",
-        "<cmd>lua require('smart-splits').resize_right()<cr>",
-        desc = "Resize Window Right",
-      },
-      {
-        "<C-S-A-Down>",
-        "<cmd>lua require('smart-splits').resize_down()<cr>",
-        desc = "Resize Window Down",
-      },
-      {
-        "<C-S-A-Up>",
-        "<cmd>lua require('smart-splits').resize_up()<cr>",
-        desc = "Resize Window Up",
-      },
-
-      -- swap windows
-      {
-        "<C-S-Left>",
-        "<cmd>lua require('smart-splits').swap_buf_left()<cr>",
-        desc = "Swap Buffer Left",
-      },
-      {
-        "<C-S-Right>",
-        "<cmd>lua require('smart-splits').swap_buf_right()<cr>",
-        desc = "Swap Buffer Right",
-      },
-      {
-        "<C-S-Down>",
-        "<cmd>lua require('smart-splits').swap_buf_down()<cr>",
-        desc = "Swap Buffer Down",
-      },
-      {
-        "<C-S-Up>",
-        "<cmd>lua require('smart-splits').swap_buf_up()<cr>",
-        desc = "Swap Buffer Up",
-      },
-    },
-    opts = {
-      cursor_follows_swapped_bufs = true,
-      at_edge = "stop",
-      default_amount = 4,
-    },
-    config = function(_, opts)
-      require("smart-splits").setup(opts)
-
-      -- in tmux, smart-splits sometimes set pane-is-vim to 0
-      -- even if we didn't left nvim
-      local mux = require("smart-splits.mux").get()
-      if not mux or mux.type ~= "tmux" then
-        return
-      end
-      nvim_utils.autocmd("FocusGained", {
-        group = nvim_utils.augroup "fix_on_init_smart_splits_nvim",
-        callback = function()
-          local pane_id = os.getenv "TMUX_PANE"
-          if tonumber(tmux_exec { "show-options", "-pqvt", pane_id, "@pane-is-vim" }) == 1 then
-            return
-          end
-          tmux_exec { "set-option", "-pt", pane_id, "@pane-is-vim", 1 }
-        end,
-      })
     end,
   },
 
