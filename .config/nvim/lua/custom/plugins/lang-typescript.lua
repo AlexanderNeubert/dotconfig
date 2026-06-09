@@ -4,29 +4,16 @@ return {
     optional = true,
     opts = {
       servers = {
-        vtsls = {
-          filetypes = { "javascript", "typescript" },
+        tsgo = {
           settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                maxInlayHintLength = 30,
-                completion = {
-                  enableServerSideFuzzyMatch = true,
-                },
-              },
-            },
             typescript = {
-              updateImportsOnFileMove = { enabled = "always" },
-              suggest = {
-                completeFunctionCalls = true,
-              },
               inlayHints = {
                 enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
+                functionLikeReturnTypes = { enabled = false },
+                parameterNames = {
+                  enabled = "literals",
+                  suppressWhenArgumentMatchesName = true,
+                },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
@@ -36,7 +23,7 @@ return {
         },
       },
       setup = {
-        vtsls = function(_, opts)
+        tsgo = function(_, opts)
           opts.settings.javascript =
             vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
         end,

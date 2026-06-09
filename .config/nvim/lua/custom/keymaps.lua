@@ -7,11 +7,6 @@ map({ "n", "v" }, "<Space>", "<Nop>", "Leader", { silent = true })
 -- clear search
 map({ "n", "i", "s" }, "<Esc>", function()
   vim.cmd "noh"
-  local has_luasnip = package.loaded["luasnip"]
-  if has_luasnip then
-    local luasnip = require "luasnip"
-    luasnip.unlink_current()
-  end
   return "<Esc>"
 end, "Esc and Clear hlsearch", { expr = true })
 

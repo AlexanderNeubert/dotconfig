@@ -61,14 +61,14 @@ return {
     event = { "LazyFile", "VeryLazy" },
     opts = {
       mappings = {
-        left = "<A-Left>",
-        right = "<A-Right>",
-        down = "<A-Down>",
-        up = "<A-Up>",
-        line_left = "<A-Left>",
-        line_right = "<A-Right>",
-        line_down = "<A-Down>",
-        line_up = "<A-Up>",
+        left = "<A-h>",
+        right = "<A-l>",
+        down = "<A-j>",
+        up = "<A-k>",
+        line_left = "<A-h>",
+        line_right = "<A-l>",
+        line_down = "<A-j>",
+        line_up = "<A-k>",
       },
       options = {
         reindent_linewise = false,
@@ -101,7 +101,6 @@ return {
       --   opts = {},
       --   config = function() end,
       -- },
-      "L3MON4D3/LuaSnip",
       "dmitmel/cmp-cmdline-history",
     },
     opts = {
@@ -227,7 +226,7 @@ return {
           if blink_cmp_utils.inside_comment_block() then
             return { "buffer" }
           end
-          return { "lsp", "path", "snippets", "buffer" }
+          return { "lsp", "path", "buffer" }
         end,
         providers = {
           lsp = {
@@ -238,12 +237,6 @@ return {
             opts = {
               tailwind_color_icon = icons_constants.other.color,
             },
-          },
-          snippets = {
-            max_items = 10,
-            -- NOTE: kind doesn't exists in blink.cmp
-            kind = "Snippet",
-            score_offset = 0,
           },
           buffer = {
             max_items = 10,
@@ -485,85 +478,6 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-  },
-
-  {
-    "L3MON4D3/LuaSnip",
-    event = { "InsertEnter", "VeryLazy" },
-    version = "v2.*",
-    build = "make install_jsregexp",
-    keys = {
-      {
-        "<Tab>",
-        function()
-          local luasnip = require "luasnip"
-          if luasnip.expand_or_jumpable() then
-            -- insert undo breakpoint
-            keymaps_utils.run_expr "<C-g>u"
-            luasnip.expand_or_jump()
-          else
-            keymaps_utils.run_expr "<Tab>"
-          end
-        end,
-        desc = "Snippet Expand Or Forward",
-        mode = "i",
-      },
-      {
-        "<Tab>",
-        function()
-          require("luasnip").jump(1)
-        end,
-        desc = "Snippet Forward",
-        mode = "s",
-      },
-      {
-        "<S-Tab>",
-        function()
-          require("luasnip").jump(-1)
-        end,
-        desc = "Snippet Backward",
-        mode = { "i", "s" },
-      },
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-      -- Show snippets related to the language
-      -- in the current cursor position
-      ft_func = function()
-        local filetypes = require("luasnip.extras.filetype_functions").from_pos_or_filetype()
-        if vim.tbl_contains(filetypes, "markdown_inline") then
-          -- HACK: fix markdown snippets not being expanded
-          return { "markdown" }
-        end
-        return filetypes
-      end,
-      -- for lazy load snippets for given buffer
-      load_ft_func = function(...)
-        return require("luasnip.extras.filetype_functions").extend_load_ft {
-          -- TODO: add injected filetypes for each filetype
-          markdown = { "javascript", "json" },
-        }(...)
-      end,
-    },
-    config = function(_, opts)
-      require("luasnip").setup(opts)
-
-      -- Load snippets from the config folder.
-      -- `load()` duplicates entries in blink.cmp, so keep `lazy_load()`.
-      require("luasnip.loaders.from_vscode").lazy_load {
-        paths = vim.fn.stdpath "config" .. "/snippets",
-      }
-    end,
-  },
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    opts = {
-      snippets = {
-        preset = "luasnip",
-      },
-    },
   },
 
   -- auto pairs
