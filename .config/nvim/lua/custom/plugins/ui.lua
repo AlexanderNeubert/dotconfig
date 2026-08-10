@@ -550,22 +550,6 @@ return {
     },
   },
 
-  -- PERF: it causes nvim to freeze
-  -- when scrolling to code with colors
-  {
-    "brenoprata10/nvim-highlight-colors",
-    event = "VeryLazy",
-    opts = {
-      render = "virtual",
-      virtual_symbol = icons_constants.other.color,
-      virtual_symbol_position = "eol",
-      enable_named_colors = false,
-      enable_tailwind = false,
-      custom_colors = {},
-      exclude_filetypes = { "", "bigfile" },
-    },
-  },
-
   {
     "tzachar/highlight-undo.nvim",
     event = "VeryLazy",

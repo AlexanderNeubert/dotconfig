@@ -18,8 +18,6 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.grepprg = "rg --vimgrep"
 
 -- When jumping back to a recent file, restore scroll position
--- source: https://www.reddit.com/r/neovim/comments/16nead7/comment/k1e1nj5/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
--- source: https://www.reddit.com/r/neovim/comments/1cytkbq/comment/l7cqdmq/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 vim.opt.jumpoptions = "stack,view"
 
 -- Confirm to save changes before exiting modified buffer
@@ -59,10 +57,7 @@ nvim_utils.autocmd("User", {
   group = nvim_utils.augroup "load_clipboard",
   pattern = "VeryLazy",
   callback = function()
-    -- Sync clipboard between OS and Neovim.
-    -- only set clipboard if not in ssh, to make sure the OSC 52
-    -- integration works automatically
-    vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
+    vim.opt.clipboard = "unnamedplus"
   end,
 })
 
@@ -97,7 +92,7 @@ vim.opt.splitbelow = true
 -- NOTE: sync with mcauley-penney/visual-whitespace.nvim opts
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = "󰌒 ",
+  tab = "  ",
   extends = "…",
   precedes = "…",
   trail = "·",
@@ -129,9 +124,9 @@ vim.opt.hlsearch = true
 
 -- Indenting
 vim.opt.expandtab = true
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.smartindent = false -- fix indent of line starting with `#`
 vim.opt.shiftround = true -- Round indent
 
@@ -169,12 +164,6 @@ vim.opt.swapfile = false
 vim.opt.autoread = true
 
 vim.opt.smoothscroll = true
-
--- neovide ignore its font config
--- if we set guifont
-if not constants.in_neovide then
-  vim.opt.guifont = "IosevkaTerm NF:h10"
-end
 
 if constants.in_neovide then
   vim.opt.shell = "zsh"

@@ -12,13 +12,15 @@ return {
     keys = {
       {
         "<leader>o",
-        "<cmd>Oil<CR>",
+        function()
+          require("oil").open_float()
+        end,
         desc = "Oil (Cwd)",
       },
       {
         "<leader>O",
         function()
-          require("oil").open(lazyvim_utils.root())
+          require("oil").open_float(lazyvim_utils.root())
         end,
         desc = "Oil (Root)",
       },
@@ -78,6 +80,12 @@ return {
       },
       view_options = {
         show_hidden = true,
+      },
+      float = {
+        padding = 2,
+        max_width = 0.7,
+        max_height = 0.8,
+        border = "rounded",
       },
     },
   },

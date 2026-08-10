@@ -153,6 +153,16 @@ nvim_utils.autocmd({ "FileType" }, {
   end,
 })
 
+nvim_utils.autocmd("LspAttach", {
+  group = nvim_utils.augroup "enable_inlay_hints",
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client:supports_method "textDocument/inlayHint" then
+      vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+    end
+  end,
+})
+
 if constants.in_vi_edit then
   nvim_utils.autocmd("VimEnter", {
     group = nvim_utils.augroup "start_in_insert_mode",
