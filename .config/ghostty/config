@@ -1,30 +1,13 @@
-# =============================================================================
-# Fonts
-# =============================================================================
-
 # font-family = "JetBrainsMono Nerd Font Mono"
 font-family = "Hack Nerd Font Mono"
 font-style = Regular
-font-size = 14.5
-font-thicken = true
-adjust-cell-height = 8%
-# font-feature = +calt,+liga,+clig
-# Keep ligatures visible while typing at the cursor.
-# font-shaping-break = no-cursor
+font-size = 15
+adjust-cell-height = 39%
 
-# =============================================================================
-# Colors — Catppuccin Mocha
-# =============================================================================
-
-theme = Catppuccin Mocha
-background-opacity = 0.9
-background-opacity-cells = true
-alpha-blending = linear-corrected
-minimum-contrast = 1.1
-
-# =============================================================================
-# Window
-# =============================================================================
+theme = Rose Pine
+# background-opacity = 0.9
+# background-opacity-cells = true
+alpha-blending = native
 
 macos-titlebar-style = tabs
 window-padding-x = 14
@@ -32,23 +15,11 @@ window-padding-y = 8
 window-padding-color = extend
 resize-overlay = never
 
-# =============================================================================
-# Cursor
-# =============================================================================
-
 cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor,ssh-env
 
-# =============================================================================
-# Mouse
-# =============================================================================
-
 mouse-scroll-multiplier = precision:0.95,discrete:3
-
-# =============================================================================
-# Keybinds
-# =============================================================================
 
 macos-option-as-alt = left
 

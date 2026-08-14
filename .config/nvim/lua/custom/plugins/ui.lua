@@ -302,6 +302,13 @@ return {
           },
           opts = { skip = true },
         },
+        {
+          filter = {
+            event = "msg_show",
+            kind = "progress",
+          },
+          opts = { skip = true },
+        },
         -- show long notifications in split
         {
           filter = {

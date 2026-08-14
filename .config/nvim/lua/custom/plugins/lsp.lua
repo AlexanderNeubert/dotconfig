@@ -24,7 +24,7 @@ return {
       -- NOTE: more keys in ./keymaps.lua
       {
         "<leader>li",
-        "<cmd>LspInfo<cr>",
+        "<cmd>checkhealth vim.lsp<cr>",
         desc = "Lsp Info",
       },
       {

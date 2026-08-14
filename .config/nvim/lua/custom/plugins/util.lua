@@ -300,23 +300,23 @@ return {
     end,
   },
 
-  {
-    "chrishrb/gx.nvim",
-    submodules = false,
-    cmd = { "Browse" },
-    keys = {
-      {
-        "gl",
-        "<Cmd>Browse<CR>",
-        mode = { "n", "x" },
-      },
-    },
-    init = function()
-      -- disable netrw gx
-      vim.g.netrw_nogx = 1
-    end,
-    opts = {},
-  },
+  -- {
+  --   "chrishrb/gx.nvim",
+  --   submodules = false,
+  --   cmd = { "Browse" },
+  --   keys = {
+  --     {
+  --       "gl",
+  --       "<Cmd>Browse<CR>",
+  --       mode = { "n", "x" },
+  --     },
+  --   },
+  --   init = function()
+  --     -- disable netrw gx
+  --     vim.g.netrw_nogx = 1
+  --   end,
+  --   opts = {},
+  -- },
 
   -- library used by other plugins
   { "nvim-lua/plenary.nvim" },

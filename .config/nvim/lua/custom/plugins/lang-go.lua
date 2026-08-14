@@ -8,11 +8,18 @@ return {
   {
     "neovim/nvim-lspconfig",
     optional = true,
+    init = function()
+      vim.filetype.add {
+        extension = {
+          gotmpl = "gotmpl",
+        },
+      }
+    end,
     opts = {
-        servers = {
-          gopls = {
-            settings = {
-              gopls = {
+      servers = {
+        gopls = {
+          settings = {
+            gopls = {
               hints = {
                 assignVariableTypes = false,
                 compositeLiteralFields = true,

@@ -729,21 +729,7 @@ return {
       {
         "<leader>fu",
         function()
-          Snacks.picker.pick {
-            finder = "vim_undo",
-            format = "undo",
-            preview = "preview",
-            confirm = "item_action",
-            win = {
-              preview = {
-                wo = {
-                  number = false,
-                  relativenumber = false,
-                  signcolumn = "no",
-                },
-              },
-            },
-          }
+          Snacks.picker.undo()
         end,
         desc = "Undo Tree",
       },
