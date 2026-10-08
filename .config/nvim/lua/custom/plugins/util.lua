@@ -159,8 +159,8 @@ return {
       {
         "<leader>ft",
         function()
-          local PATH = vim.env.PATH
-          Snacks.terminal.toggle("PATH=" .. PATH .. " zsh", {
+          Snacks.terminal.toggle({ "zsh" }, {
+            env = { PATH = vim.env.PATH },
             win = {
               border = "rounded",
             },

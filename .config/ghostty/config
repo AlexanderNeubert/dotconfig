@@ -4,7 +4,8 @@ font-style = Regular
 font-size = 15
 adjust-cell-height = 39%
 
-theme = Rose Pine
+theme = Oxocarbon
+# theme = Rose Pine
 # background-opacity = 0.9
 # background-opacity-cells = true
 alpha-blending = native

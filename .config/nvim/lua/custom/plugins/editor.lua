@@ -65,6 +65,7 @@ return {
         ["<C-t>"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",
+        ["q"] = "actions.close",
         ["-"] = "actions.parent",
         ["_"] = "actions.open_cwd",
         ["`"] = "actions.cd",
@@ -763,6 +764,20 @@ return {
         end,
         desc = "Lazygit (Root)",
       },
+      {
+        "<leader>gd",
+        function()
+          Snacks.terminal.toggle("gh dash", {
+            win = {
+              backdrop = true,
+              style = "lazygit",
+              width = 0,
+              height = 0,
+            },
+          })
+        end,
+        desc = "GitHub Dashboard",
+      },
     },
     opts = {
       picker = {
@@ -1220,6 +1235,8 @@ return {
       },
     },
     config = function(_, opts)
+      require("blame").setup(opts)
+
       vim.api.nvim_create_autocmd("User", {
         pattern = "BlameViewOpened",
         callback = function(event)

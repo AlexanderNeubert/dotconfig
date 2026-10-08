@@ -63,7 +63,7 @@ require("lazy").setup {
       height = constants.height_fullscreen,
     },
   },
-  install = { colorscheme = { "rose-pine", "habamax" } },
+  install = { colorscheme = { "oxocarbon", "habamax" } },
   checker = { enabled = true, notify = false },
   change_detection = { enabled = false },
   performance = {

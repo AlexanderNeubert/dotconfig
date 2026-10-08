@@ -20,6 +20,7 @@ return {
         gopls = {
           settings = {
             gopls = {
+              buildFlags = { "-tags=integration" },
               hints = {
                 assignVariableTypes = false,
                 compositeLiteralFields = true,
@@ -37,6 +38,24 @@ return {
         -- override LazyVim's stale semanticTokensProvider workaround;
         -- modern gopls advertises the capability (with its own legend) itself.
         gopls = function() end,
+      },
+    },
+  },
+
+  {
+    "nvim-neotest/neotest",
+    optional = true,
+    opts = {
+      adapters = {
+        ["neotest-golang"] = {
+          go_test_args = { "-v", "-race", "-count=1", "-tags=integration" },
+          go_list_args = { "-tags=integration" },
+          dap_go_opts = {
+            delve = {
+              build_flags = "-tags=integration",
+            },
+          },
+        },
       },
     },
   },

@@ -4,7 +4,7 @@ return {
     optional = true,
     opts = {
       servers = {
-        tsgo = {
+        tsc = {
           settings = {
             typescript = {
               inlayHints = {
@@ -23,7 +23,7 @@ return {
         },
       },
       setup = {
-        tsgo = function(_, opts)
+        tsc = function(_, opts)
           opts.settings.javascript =
             vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
         end,
